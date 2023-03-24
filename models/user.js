@@ -11,10 +11,29 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
+        //match valid email address?
     },
-    thoughts:
-    friends:   
+    thoughts: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Thought',
+        },
+    ],
+    friends: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Friend',
+        },
+    ]
 });
+
+//Create a virtual called friendCount that retrieves the length of the user's friends array field on query.
+userSchema
+    .virtual('friendCount')
+    .get(function(){
+        return this.friends.length
+    })
+    
 
 const User = mongoose.model('User', userSchema);
 
