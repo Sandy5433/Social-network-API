@@ -1,3 +1,5 @@
+const {Schema, Types} = require('mongoose');
+
 const reactionSchema = new Schema(
     {
       reactionId: {
@@ -17,12 +19,6 @@ const reactionSchema = new Schema(
         type: Date,
         default: Date.now,
       },
-    },
-    {
-      toJSON: {
-        getters: true,
-      },
-      id: false,
     }
   );
   

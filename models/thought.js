@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
 const Reaction = require('./reaction')
+const {Schema, model} = require('mongoose');
+const dayjs = require('dayjs')
 
-const thoughtsSchema = new mongoose.Schema({
+const thoughtsSchema = new Schema({
     thoughtText: {
         type: String, 
         required: true,
@@ -11,10 +12,12 @@ const thoughtsSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
+        get: function (date){
+          return dayjs(date).format('ddmmyyyy')
+        }
         //getter method to format timestamp on query
     },
     username: {
-        //the user that created this thought
         type: String, 
         required: true,
     },
@@ -23,6 +26,7 @@ const thoughtsSchema = new mongoose.Schema({
   {
     toJSON: {
       virtuals: true,
+      getters: true
     },
     id: false,
   }
@@ -34,4 +38,6 @@ thoughtsSchema
     return this.reactions.length
   })
 
+  
+const Thought = model('Thought', thoughtsSchema);
   module.exports = Thought;

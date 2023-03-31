@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+const {Schema, model} = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+
+const userSchema = new Schema({
     username: {
         type: String, 
         required: true,
@@ -10,8 +11,8 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
-        //match valid email address?
+        unique: true,
+        match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
     },
     thoughts: [
         {
@@ -22,10 +23,16 @@ const userSchema = new mongoose.Schema({
     friends: [
         {
           type: Schema.Types.ObjectId,
-          ref: 'Friend',
+          ref: 'User',
         },
     ]
-});
+},
+{
+    toJSON: {
+      virtuals: true,
+    },
+    id: false,
+  });
 
 //Create a virtual called friendCount that retrieves the length of the user's friends array field on query.
 userSchema
@@ -35,18 +42,8 @@ userSchema
     })
     
 
-const User = mongoose.model('User', userSchema);
+const User = model('User', userSchema);
 
-const handleError = (err) => console.error(err);
 
-User.create(
-    {
-        username: 'sandyh',
-        email: 'sandy@gmail.com',
-        thoughts:''
-        friends: 
-    },
-    (err) => (err ? handleError(err) : console.log('Created new document'))
-);
 
 module.exports = User;
