@@ -12,10 +12,10 @@ const thoughtsSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now,
+    //getter method to format timestamp on query
         get: function (date){
-          return dayjs(date).format('ddmmyyyy')
+          return dayjs(date).format('ddd D MMM, YYYY h:mm A')
         }
-        //getter method to format timestamp on query
     },
     username: {
         type: String, 
@@ -38,6 +38,5 @@ thoughtsSchema
     return this.reactions.length
   })
 
-  
 const Thought = model('Thought', thoughtsSchema);
-  module.exports = Thought;
+module.exports = Thought;
