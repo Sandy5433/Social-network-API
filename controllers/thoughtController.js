@@ -15,7 +15,7 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // create a new video
+  // create a new thought
   createthought(req, res) {
     Thought.create(req.body)
       .then((thought) => {
@@ -60,12 +60,12 @@ module.exports = {
           ? res.status(404).json({ message: 'No thought with this id!' })
           : User.findOneAndUpdate(
               { thoughts: req.params.thoughtId },
-              { $pull: { videos: req.params.thoughtId } },
+              { $pull: { thoughts: req.params.thoughtId } },
               { new: true }
             )
       )
-      .then((thought) =>
-        !thought
+      .then((user) =>
+        !user
           ? res
               .status(404)
               .json({ message: 'Thought created but no user with this id!' })
